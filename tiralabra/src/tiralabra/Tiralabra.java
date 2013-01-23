@@ -11,9 +11,10 @@ package tiralabra;
 public class Tiralabra {
 
     /**
-     * @param args the command line arguments
+     * @param args komentorivillä annetut argumentit (ei käytössä)
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Ohjelma ohj = new Ohjelma();
+        ohj.kaynnista();
     }
 }
