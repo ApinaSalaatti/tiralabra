@@ -1,25 +1,27 @@
+package tiralabra.logiikka.algoritmit;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tiralabra.logiikka.algoritmit;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-
 import tiralabra.logiikka.Kartta;
+import tiralabra.logiikka.algoritmit.Solmu;
+
 /**
  *
  * @author ApinaSalaatti
  */
-public class DijkstraTest {
+public class AstarTest {
     char[][] testikarttaCh = { {'.', '#', '.', '.', '.'},
                                {'.', '#', '.', '#', '.'},
                                {'.', '.', '.', '#', '.'} };
     
     Solmu[][] testikartta;
     
-    public DijkstraTest() {
+    public AstarTest() {
     }
 
     @BeforeClass
@@ -43,8 +45,7 @@ public class DijkstraTest {
     
     @Test
     public void testaaAjoa() {
-        Dijkstra d = new Dijkstra();
-        
-        d.aja(testikartta, testikartta[0][0], testikartta[2][4]);
+        Astar a = new Astar();
+        a.aja(testikartta, testikartta[0][0], testikartta[2][4]);
     }
 }

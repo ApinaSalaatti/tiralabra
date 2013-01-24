@@ -36,10 +36,24 @@ public class Dijkstra {
      * Edellisessä ajossa käytetty maalisolmu (tulosten tulostamista varten)
      */
     private Solmu maaliSolmu;
+    /**
+     * Taulukko, jonka kussakin indeksissä on talletettuna se Solmu josta kyseisen indeksin omaavaan Solmuun on saavuttu.
+     */
+    private Solmu[] polku;
     
     public Dijkstra() {
         kasittelematta = new PriorityQueue<Solmu>();
         kasitelty = new ArrayList<Solmu>();
+        polku = null;
+    }
+    
+    /**
+     * Getteri taululle, joka tallettaa tiedon mistä Solmusta kuhunkin Solmuun on saavuttu
+     * 
+     * @return algoritmin löytämän reitin säilyttävä Solmu[]-taulukko, joka on null jos algoa ei ole kertaakaan ajettu
+     */
+    public Solmu[] polku() {
+        return polku;
     }
     
     /**
@@ -52,6 +66,8 @@ public class Dijkstra {
     public void aja(Solmu[][] kartta, Solmu alku, Solmu maali) {
         aloitusSolmu = alku;
         maaliSolmu = maali;
+        
+        polku = new Solmu[kartta.length * kartta[0].length];
         
         long alkuAika = System.currentTimeMillis();
         ISS(kartta, alku);
@@ -88,11 +104,13 @@ public class Dijkstra {
     
     /**
      * Initialize single source -metodi, toisin sanoen metodi joka asettaa kaikkien kartan Solmujen etäisyydeksi "äärettömän" (eli tosi ison).
+     * Lopuksi aloitussolmun etäisyydeksi asetetaan 0.
      */
-    public void ISS(Solmu[][] kartta, Solmu alku) {
+    private void ISS(Solmu[][] kartta, Solmu alku) {
         for(int y = 0; y < kartta.length; y++) {
             for(int x = 0; x < kartta[0].length; x++) {
                 kartta[y][x].alkuun = Integer.MAX_VALUE - 100000; // ei MAX_VALUE, koska tällöin siihen plussaaminen heittäisi sen negatiiviseksi
+                polku[kartta[y][x].indeksi()] = null;
             }
         }
         
@@ -108,13 +126,14 @@ public class Dijkstra {
      * @param u Solmu jonka kautta saavutaan
      * @param v Solmu jota löysätään
      */
-    public void loysaa(PriorityQueue<Solmu> solmut, Solmu u, Solmu v) {
+    private void loysaa(PriorityQueue<Solmu> solmut, Solmu u, Solmu v) {
         // TODO: pitäisikö myös kulmittain voida liikkua, niin että hintaan lisätään kerroin 1,4?
         if(v.alkuun > u.alkuun + v.hinta()) {
             v.alkuun = u.alkuun + v.hinta();
+            polku[v.indeksi()] = u;
         }
         
-        // kikkailua, näin jono pysyy järjestyksessä. Muuttunee suuntaan tai toiseen kun saan omat tietorakenteet kuntoon.
+        // kikkailua, näin jono pysyy varmasti järjestyksessä. Muuttunee suuntaan tai toiseen kun saan omat tietorakenteet kuntoon.
         if(solmut.remove(v)) {
             solmut.add(v);
         }
@@ -127,5 +146,13 @@ public class Dijkstra {
         System.out.println("DIJKSTRA");
         System.out.println("Aikaa kului: " + kulunutAika + "ms");
         System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
+        
+        Solmu nyt = polku[maaliSolmu.indeksi()];
+        
+        System.out.println(maaliSolmu);
+        while(nyt != null) {
+            System.out.println(nyt);
+            nyt = polku[nyt.indeksi()];
+        }
     }
 }

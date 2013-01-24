@@ -25,6 +25,10 @@ public class Solmu implements Comparable {
      */
     private int hinta;
     /**
+     * Uniikki indeksinumero, jonka avulla kukin solmu erotetaan esimerkiksi kuljettua polkua ylläpitävässä taulukossa.
+     */
+    private int indeksi;
+    /**
      * Etäisyys lähtösolmuun.
      */
     public int alkuun;
@@ -33,12 +37,13 @@ public class Solmu implements Comparable {
      */
     public int maaliin;
     
-    public Solmu(int X, int Y, int h) {
+    public Solmu(int X, int Y, int h, int i) {
         x = X;
         y = Y;
         hinta = h;
         alkuun = 0;
         maaliin = 0;
+        indeksi = i;
     }
     
     /**
@@ -68,6 +73,15 @@ public class Solmu implements Comparable {
     }
     
     /**
+     * Getteri Solmun uniikille indeksi-numerolle.
+     * 
+     * @return Solmun indeksi
+     */
+    public int indeksi() {
+        return indeksi;
+    }
+    
+    /**
      * Tulostaa Solmun koordinaatin
      */
     @Override
@@ -75,11 +89,21 @@ public class Solmu implements Comparable {
         return "(" + x + ", " + y + ")";
     }
     
+    /**
+     * Metodi kahden Solmun vertailuun. Vertailu perustuu etäisyysarvioihin lähtö- ja maalisolmuihin.
+     * Ainoastaan A*-algoritmi muuttaa solmun etäisyyttä maaliin, muut algoritmit jättävät sen nollaksi jolloin se ei vaikuta etäisyysarvioon.
+     * 
+     * @param o vertailtava solmu
+     * @return positiivnen jos tämän solmun etäisyys on suurempi, nolla jos etäisyydet ovat samat, negatiivinen jos toisen etäisyys on suurempi
+     */
     @Override
     public int compareTo(Object o) {
         Solmu s = (Solmu)o;
         
-        return alkuun - s.alkuun;
+        int tama = this.alkuun + this.maaliin;
+        int tuo = s.alkuun + s.maaliin;
+        
+        return tama - tuo;
     }
     
     @Override

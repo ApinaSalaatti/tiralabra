@@ -6,20 +6,20 @@ package tiralabra.logiikka.algoritmit;
 
 import org.junit.*;
 import static org.junit.Assert.*;
-
 import tiralabra.logiikka.Kartta;
+
 /**
  *
  * @author ApinaSalaatti
  */
-public class DijkstraTest {
+public class BellmanFordTest {
     char[][] testikarttaCh = { {'.', '#', '.', '.', '.'},
                                {'.', '#', '.', '#', '.'},
                                {'.', '.', '.', '#', '.'} };
     
     Solmu[][] testikartta;
     
-    public DijkstraTest() {
+    public BellmanFordTest() {
     }
 
     @BeforeClass
@@ -43,8 +43,7 @@ public class DijkstraTest {
     
     @Test
     public void testaaAjoa() {
-        Dijkstra d = new Dijkstra();
-        
-        d.aja(testikartta, testikartta[0][0], testikartta[2][4]);
+        BellmanFord bf = new BellmanFord();
+        bf.aja(testikartta, testikartta[0][0], testikartta[2][4]);
     }
 }

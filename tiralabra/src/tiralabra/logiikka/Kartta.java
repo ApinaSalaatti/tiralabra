@@ -52,13 +52,16 @@ public class Kartta {
         
         kartta = new Solmu[k.length][k[0].length];
         
+        int indx = 0;
         for(int y = 0; y < k.length; y++) {
             for(int x = 0; x < k[0].length; x++) {
                 if(k[y][x] == Kartta.LATTIA) {
-                    kartta[y][x] = new Solmu(x, y, 1); // lattialla liikkumisen hinta on aina 1
+                    kartta[y][x] = new Solmu(x, y, 1, indx); // lattialla liikkumisen hinta on aina 1
+                    indx++;
                 }
                 else if(k[y][x] == Kartta.SEINA) {
-                    kartta[y][x] = new Solmu(x, y, 10); // seinään "kaivautumisen" hinta on 10
+                    kartta[y][x] = new Solmu(x, y, 10, indx); // seinään "kaivautumisen" hinta on 10
+                    indx++;
                 }
             }
         }
