@@ -49,6 +49,8 @@ public class Ohjelma {
     public void luoKomennot() {
         komennot.add(new LopetaKomento());
         komennot.add(new AsetaKarttaKomento());
+        komennot.add(new TulostaKarttaKomento());
+        komennot.add(new AjaAlgoritmiKomento());
     }
     
     /**

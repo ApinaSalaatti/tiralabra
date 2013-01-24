@@ -25,7 +25,8 @@ public class Astar {
     private ArrayList<Solmu> kasitelty;
     
     public Astar() {
-        
+        kasittelematta = new PriorityQueue<Solmu>();
+        kasitelty = new ArrayList<Solmu>();
     }
     
     /**
@@ -35,7 +36,7 @@ public class Astar {
      * @param alku solmu josta algoritmi lähtee reittiä etsimään
      * @param maali tavoitteena oleva solmu
      */
-    public void aja(char[] kartta, Solmu alku, Solmu maali) {
+    public void aja(char[][] kartta, Solmu alku, Solmu maali) {
         
     }
 }
