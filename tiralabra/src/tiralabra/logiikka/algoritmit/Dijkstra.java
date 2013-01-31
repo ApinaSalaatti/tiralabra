@@ -5,7 +5,7 @@
 package tiralabra.logiikka.algoritmit;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
+import tiralabra.logiikka.tietorakenteet.*;
 import tiralabra.logiikka.Kartta;
 
 /**
@@ -16,14 +16,8 @@ import tiralabra.logiikka.Kartta;
 public class Dijkstra {
     /**
      * Vielä läpi käymättömät solmut minimikeossa.
-     * TODO: toteuta omalla tietorakenteella.
      */
-    private PriorityQueue<Solmu> kasittelematta;
-    /**
-     * Jo käsitellyt solmut tavallisessa linkitetyssä listassa.
-     * TODO: toteuta omalla tietorakenteella.
-     */
-    private ArrayList<Solmu> kasitelty;
+    private Minimikeko<Solmu> kasittelematta;
     /**
      * Viimeisimpään suoritukseen kulunut aika.
      */
@@ -42,8 +36,7 @@ public class Dijkstra {
     private Solmu[] polku;
     
     public Dijkstra() {
-        kasittelematta = new PriorityQueue<Solmu>();
-        kasitelty = new ArrayList<Solmu>();
+        kasittelematta = new Minimikeko<Solmu>();
         polku = null;
     }
     
@@ -70,31 +63,19 @@ public class Dijkstra {
         polku = new Solmu[kartta.length * kartta[0].length];
         
         long alkuAika = System.currentTimeMillis();
+        
         ISS(kartta, alku);
         
         for(int i = 0; i < kartta.length; i++) {
             for(int j = 0; j < kartta[0].length; j++) {
-                kasittelematta.add(kartta[i][j]);
+                kasittelematta.lisaa(kartta[i][j]);
             }
         }
         
-        while(!kasittelematta.isEmpty()) {
+        while(!kasittelematta.tyhja()) {
             Solmu s = kasittelematta.poll();
-            kasitelty.add(s);
             
-            // löysätään kaikki naapurisolmut
-            if(s.x() > 0) {
-                loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y()][s.x() - 1]); // vasemmalle
-            }
-            if(s.x() < kartta[0].length - 1) {
-                loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y()][s.x() + 1]); // oikealle
-            }
-            if(s.y() > 0) {
-                loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y() - 1][s.x()]); // ylös
-            }
-            if(s.y() < kartta.length - 1) {
-                loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y() + 1][s.x()]); // alas
-            }
+            loysaaKaikki(kartta, s);
         }
         
         kulunutAika = System.currentTimeMillis() - alkuAika;
@@ -119,6 +100,27 @@ public class Dijkstra {
     }
     
     /**
+     * Löysätään kaikki annetun solmun naapurisolmut.
+     * 
+     * @param kartta kartta jota ollaan tutkimassa
+     * @param s Solmu jonka naapurisolmuja ollaan löysäämässä
+     */
+    public void loysaaKaikki(Solmu[][] kartta, Solmu s) {
+        if(s.x() > 0) {
+            loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y()][s.x() - 1]); // vasemmalle
+        }
+        if(s.x() < kartta[0].length - 1) {
+            loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y()][s.x() + 1]); // oikealle
+        }
+        if(s.y() > 0) {
+            loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y() - 1][s.x()]); // ylös
+        }
+        if(s.y() < kartta.length - 1) {
+            loysaa(kasittelematta, kartta[s.y()][s.x()], kartta[s.y() + 1][s.x()]); // alas
+        }
+    }
+    
+    /**
      * Metodi joka "löysää" (relax) etäisyyden annettuun Solmuun v, mikäli etäisyys siihen on sen nykyistä etäisyyttä lyhyempi annetun Solmun u kautta.
      * Löysäämisen jälkeen vähennetään Solmun avainta minimikeossa.
      * 
@@ -126,16 +128,16 @@ public class Dijkstra {
      * @param u Solmu jonka kautta saavutaan
      * @param v Solmu jota löysätään
      */
-    private void loysaa(PriorityQueue<Solmu> solmut, Solmu u, Solmu v) {
+    private void loysaa(Minimikeko<Solmu> solmut, Solmu u, Solmu v) {
         // TODO: pitäisikö myös kulmittain voida liikkua, niin että hintaan lisätään kerroin 1,4?
         if(v.alkuun > u.alkuun + v.hinta()) {
             v.alkuun = u.alkuun + v.hinta();
             polku[v.indeksi()] = u;
         }
         
-        // kikkailua, näin jono pysyy varmasti järjestyksessä. Muuttunee suuntaan tai toiseen kun saan omat tietorakenteet kuntoon.
-        if(solmut.remove(v)) {
-            solmut.add(v);
+        // kikkailua, näin keko pysyy varmasti järjestyksessä.
+        if(solmut.poista(v)) {
+            solmut.lisaa(v);
         }
     }
     
@@ -145,8 +147,15 @@ public class Dijkstra {
     public void tulokset() {
         System.out.println("DIJKSTRA");
         System.out.println("Aikaa kului: " + kulunutAika + "ms");
-        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
         
+        tulostaReitti();
+    }
+    
+    /**
+     * Tulostetaan reitti jonka algoritmi löysi aloitussolmusta maalisolmuun.
+     */
+    public void tulostaReitti() {
+        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
         Solmu nyt = polku[maaliSolmu.indeksi()];
         
         System.out.println(maaliSolmu);

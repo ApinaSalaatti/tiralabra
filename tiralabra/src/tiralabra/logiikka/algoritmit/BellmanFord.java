@@ -48,23 +48,7 @@ public class BellmanFord {
         int kaaret = kartta.length * kartta[0].length;
         
         for(int i = 0; i <= kaaret; i++) {
-            for(int y = 0; y < kartta.length; y++) {
-                for(int x = 0; x < kartta[0].length; x++) {
-                    // löysätään kaikki naapurisolmut
-                    if(x > 0) {
-                        loysaa(kartta[y][x], kartta[y][x - 1]); // vasemmalle
-                    }
-                    if(x < kartta[0].length - 1) {
-                        loysaa(kartta[y][x], kartta[y][x + 1]); // oikealle
-                    }
-                    if(y > 0) {
-                        loysaa(kartta[y][x], kartta[y - 1][x]); // ylös
-                    }
-                    if(y < kartta.length - 1) {
-                        loysaa(kartta[y][x], kartta[y + 1][x]); // alas
-                    }
-                }
-            }
+            loysaaKaikki(kartta);
         }
         
         kulunutAika = System.currentTimeMillis() - alkuAika;
@@ -89,10 +73,33 @@ public class BellmanFord {
     }
     
     /**
-     * Metodi joka "löysää" (relax) etäisyyden annettuun Solmuun v, mikäli etäisyys siihen on sen nykyistä etäisyyttä lyhyempi annetun Solmun u kautta.
-     * Löysäämisen jälkeen vähennetään Solmun avainta minimikeossa.
+     * Löysätään kaikki kartan solmut.
      * 
-     * @param solmut keko josta solmuja poimitaan
+     * @param kartta karttaa kuvaava Solmu[][]-taulukko
+     */
+    public void loysaaKaikki(Solmu[][] kartta) {
+        for(int y = 0; y < kartta.length; y++) {
+            for(int x = 0; x < kartta[0].length; x++) {
+                // löysätään kaikki naapurisolmut
+                if(x > 0) {
+                    loysaa(kartta[y][x], kartta[y][x - 1]); // vasemmalle
+                }
+                if(x < kartta[0].length - 1) {
+                    loysaa(kartta[y][x], kartta[y][x + 1]); // oikealle
+                }
+                if(y > 0) {
+                    loysaa(kartta[y][x], kartta[y - 1][x]); // ylös
+                }
+                if(y < kartta.length - 1) {
+                    loysaa(kartta[y][x], kartta[y + 1][x]); // alas
+                }
+            }
+        }
+    }
+    
+    /**
+     * Metodi joka "löysää" (relax) etäisyyden annettuun Solmuun v, mikäli etäisyys siihen on sen nykyistä etäisyyttä lyhyempi annetun Solmun u kautta.
+     * 
      * @param u Solmu jonka kautta saavutaan
      * @param v Solmu jota löysätään
      */
@@ -110,8 +117,15 @@ public class BellmanFord {
     public void tulokset() {
         System.out.println("BELLMAN-FORD");
         System.out.println("Aikaa kului: " + kulunutAika + "ms");
-        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
         
+        tulostaReitti();
+    }
+    
+    /**
+     * Tulostetaan reitti jonka algoritmi löysi aloitussolmusta maalisolmuun.
+     */
+    public void tulostaReitti() {
+        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
         Solmu nyt = polku[maaliSolmu.indeksi()];
         
         System.out.println(maaliSolmu);

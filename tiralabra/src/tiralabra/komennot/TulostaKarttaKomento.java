@@ -2,7 +2,8 @@ package tiralabra.komennot;
 
 import tiralabra.Ohjelma;
 /**
- *
+ * Käyttöliittymään kartan tulostava komento.
+ * 
  * @author Merioksan Mikko
  */
 public class TulostaKarttaKomento implements Komento {

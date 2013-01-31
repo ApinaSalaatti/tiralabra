@@ -4,14 +4,12 @@
  */
 package tiralabra;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 import tiralabra.komennot.*;
 import tiralabra.logiikka.Logiikka;
+import tiralabra.logiikka.tietorakenteet.LinkitettyLista;
 /**
  * Ohjelman pääluokka. Hallinnoi ohjelman käyttöliittymää. Logiikka on erotettu käyttöliittymän toiminnasta.
- * 
- * @see tiralabra.logiikka;
  * 
  * @author merioksa
  */
@@ -28,7 +26,7 @@ public class Ohjelma {
      * Lista kaikista ohjelman tuntemista komennoista.
      * TODO: muuta itse rakennetuksi listaksi.
      */
-    private ArrayList<Komento> komennot;
+    private LinkitettyLista<Komento> komennot;
     /**
      * Sovelluksen logiikka, jota tämän luokan komennoilla kutsutaan.
      */
@@ -37,7 +35,7 @@ public class Ohjelma {
     public Ohjelma() {
         kaynnissa = true;
         lukija = new Scanner(System.in);
-        komennot = new ArrayList<Komento>();
+        komennot = new LinkitettyLista<Komento>();
         logiikka = new Logiikka();
         
         luoKomennot();
@@ -46,11 +44,12 @@ public class Ohjelma {
     /**
      * Luodaan ohjelman käyttämät komennot ja lisätään ne komento-listaan.
      */
-    public void luoKomennot() {
-        komennot.add(new LopetaKomento());
-        komennot.add(new AsetaKarttaKomento());
-        komennot.add(new TulostaKarttaKomento());
-        komennot.add(new AjaAlgoritmiKomento());
+    private void luoKomennot() {
+        komennot.lisaa(new LopetaKomento());
+        komennot.lisaa(new AsetaKarttaKomento());
+        komennot.lisaa(new TulostaKarttaKomento());
+        komennot.lisaa(new AjaAlgoritmiKomento());
+        komennot.lisaa(new AsetaAlkuJaMaaliKomento());
     }
     
     /**
@@ -80,11 +79,11 @@ public class Ohjelma {
             
             int komento = lukija.nextInt();
             
-            if(komento < 0 || komento >= komennot.size()) {
+            if(komento < 0 || komento >= komennot.koko()) {
                 System.out.println("Virheellinen komento!");
             }
             else {
-                komennot.get(komento).suorita(this);
+                komennot.hae(komento).suorita(this);
             }
         }
     }
@@ -94,8 +93,8 @@ public class Ohjelma {
      */
     public void tulostaValikko() {
         System.out.println("Anna haluamasi komennon numero:");
-        for(int i = 0; i < komennot.size(); i++) {
-            System.out.println(i + " : " + komennot.get(i).kuvaus());
+        for(int i = 0; i < komennot.koko(); i++) {
+            System.out.println(i + " : " + komennot.hae(i).kuvaus());
         }
     }
     

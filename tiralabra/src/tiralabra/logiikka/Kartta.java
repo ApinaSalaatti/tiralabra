@@ -27,6 +27,14 @@ public class Kartta {
      * Kartta merkkeinä tulostamista varten.
      */
     private char[][] karttaCh;
+    /**
+     * Viimeisin asetettu lähtö-koordinaatti (asetetaan uuden kartan yhteydessä koordinaatteihin (0, 0).
+     */
+    private Solmu alku;
+    /**
+     * Viimeisin asetettu maali-koordinaatti (asetetaan uuden kartan yhteydessä koordinaatteihin (kartan leveys, kartan korkeus).
+     */
+    private Solmu maali;
     
     public Kartta() {
         kartta = null;
@@ -49,9 +57,20 @@ public class Kartta {
      */
     public void asetaKartta(char[][] k) {
         karttaCh = k;
-        
         kartta = new Solmu[k.length][k[0].length];
         
+        luoKartta(k);
+        
+        alku = kartta[0][0];
+        maali = kartta[kartta.length-1][kartta[0].length-1];
+    }
+    
+    /**
+     * Muuttaa parametrina annetun char[][] taulukon Solmu[][]-taulukoksi
+     * 
+     * @param k lähteenä toimiva char[][]-taulukko
+     */
+    public void luoKartta(char[][] k) {
         int indx = 0;
         for(int y = 0; y < k.length; y++) {
             for(int x = 0; x < k[0].length; x++) {
@@ -64,6 +83,58 @@ public class Kartta {
                     indx++;
                 }
             }
+        }
+    }
+    
+    /**
+     * Palauttaa tämänhetkisen lähtösolmun.
+     * 
+     * @return lähtöpaikkana toimiva solmu
+     */
+    public Solmu alku() {
+        return alku;
+    }
+    /**
+     * Asettaa aloitussolmuksi parametreinä annetuissa koordinaateissa olevan solmun.
+     * 
+     * @param x haluttu x-koordinaatti
+     * @param y haluttu y-koordinaatti
+     */
+    public void alku(int x, int y) {
+        if(kartta == null) {
+            System.out.println("Karttaa ei ole asetettu!");
+        }
+        else if(x < 0 || x > kartta[0].length || y < 0 || y > kartta.length) {
+            System.out.println("Virheelliset koordinaatit!");
+        }
+        else {
+            alku = kartta[x][y];
+        }
+    }
+    
+    /**
+     * Palauttaa tämänhetkisen maalisolmun.
+     * 
+     * @return maalina toimiva solmu
+     */
+    public Solmu maali() {
+        return maali;
+    }
+    /**
+     * Asettaa maalisolmuksi parametreinä annetuissa koordinaateissa olevan solmun.
+     * 
+     * @param x haluttu x-koordinaatti
+     * @param y haluttu y-koordinaatti
+     */
+    public void maali(int x, int y) {
+        if(kartta == null) {
+            System.out.println("Karttaa ei ole asetettu!");
+        }
+        else if(x < 0 || x > kartta[0].length || y < 0 || y > kartta.length) {
+            System.out.println("Virheelliset koordinaatit!");
+        }
+        else {
+            maali = kartta[x][y];
         }
     }
     
