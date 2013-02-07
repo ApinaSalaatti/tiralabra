@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.Scanner;
 import tiralabra.logiikka.tietorakenteet.LinkitettyLista;
 import tiralabra.Ohjelma;
+import tiralabra.util.Tiedostonlukija;
 
 /**
  * Komento jolla asetetaan uusi kartta algoritmien läpikäytäväksi.
@@ -80,14 +81,7 @@ public class AsetaKarttaKomento implements Komento {
         System.out.println("Anna tiedostonimi:");
         String nimi = lukija.nextLine();
 
-        Scanner s = tiedostoLukijaan(nimi);
-        
-        LinkitettyLista<String> rivit = new LinkitettyLista<String>();
-        while(s.hasNextLine()) {
-            rivit.lisaa(s.nextLine());
-        }
-
-        return listastaCharTauluun(rivit);
+        return Tiedostonlukija.tiedostoTauluun(nimi);
     }
     
     /**

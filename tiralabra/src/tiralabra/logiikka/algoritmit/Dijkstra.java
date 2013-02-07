@@ -71,16 +71,31 @@ public class Dijkstra {
                 kasittelematta.lisaa(kartta[i][j]);
             }
         }
-        
+      
+        System.out.println("Etäisyys maaliin: " + kartta[maali.y()][maali.x()].alkuun);
         while(!kasittelematta.tyhja()) {
             Solmu s = kasittelematta.poll();
             
             loysaaKaikki(kartta, s);
+            //System.out.println("Poistettiin solmu " + s + ", koko nyt: " + kasittelematta.koko());
         }
         
         kulunutAika = System.currentTimeMillis() - alkuAika;
         
-        tulokset();
+        System.out.println();
+        System.out.println();
+        
+        System.out.println("DATAAAAA");
+        for(int i = 0; i < kartta.length; i++) {
+            for(int j = 0; j < kartta[0].length; j++) {
+                System.out.println("Solmusta " + kartta[i][j] + " alkuun: " + kartta[i][j].alkuun);
+            }
+        }
+        System.out.println("DATAAAAA");
+        
+        System.out.println();
+        System.out.println();
+        //tulokset();
     }
     
     /**
@@ -129,10 +144,21 @@ public class Dijkstra {
      * @param v Solmu jota löysätään
      */
     private void loysaa(Minimikeko<Solmu> solmut, Solmu u, Solmu v) {
-        // TODO: pitäisikö myös kulmittain voida liikkua, niin että hintaan lisätään kerroin 1,4?
+        if(v.toString().equals("(68, 25)") || v.toString().equals("(69, 24)")) {
+            System.out.println("Löysätään maalin naapuria! Etäisyys solmuun " + u + ": " + u.alkuun);
+        }
+        if(v.toString().equals("(69, 25)")) {
+            System.out.println("Löysätään maalia! Etäisyys solmuun " + u + ": " + u.alkuun);
+        }
         if(v.alkuun > u.alkuun + v.hinta()) {
+            if(v.toString().equals("(69, 25)"))
+                System.out.println("Solmuun " + v + " saavutaan solmun " + u + " kautta.");
             v.alkuun = u.alkuun + v.hinta();
             polku[v.indeksi()] = u;
+        }
+        
+        if(v.toString().equals("(0, 1)") || v.toString().equals("(1, 0)")) {
+            System.out.println("Löysättiin alun naapuria! Etäisyys alkuun: " + v.alkuun);
         }
         
         // kikkailua, näin keko pysyy varmasti järjestyksessä.

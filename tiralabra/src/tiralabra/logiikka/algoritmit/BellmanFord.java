@@ -53,7 +53,7 @@ public class BellmanFord {
         
         kulunutAika = System.currentTimeMillis() - alkuAika;
         
-        tulokset();
+        //tulokset();
     }
     
     /**

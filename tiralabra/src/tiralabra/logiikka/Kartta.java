@@ -56,13 +56,15 @@ public class Kartta {
      * @param k lähteenä toimiva char[][]-taulu
      */
     public void asetaKartta(char[][] k) {
-        karttaCh = k;
-        kartta = new Solmu[k.length][k[0].length];
-        
-        luoKartta(k);
-        
-        alku = kartta[0][0];
-        maali = kartta[kartta.length-1][kartta[0].length-1];
+        if(k.length > 0) {
+            karttaCh = k;
+            kartta = new Solmu[k.length][k[0].length];
+
+            luoKartta(k);
+
+            alku = kartta[0][0];
+            maali = kartta[kartta.length-1][kartta[0].length-1];
+        }
     }
     
     /**

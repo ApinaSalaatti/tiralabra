@@ -59,12 +59,7 @@ public class Astar {
         
         long alkuAika = System.currentTimeMillis();
         ISS(kartta, alku, maali);
-        
-        for(int i = 0; i < kartta.length; i++) {
-            for(int j = 0; j < kartta[0].length; j++) {
-                kasittelematta.lisaa(kartta[i][j]);
-            }
-        }
+        lisaaSolmut(kartta);
         
         Solmu s = kasittelematta.poll();
         while(s != maali) {
@@ -75,7 +70,18 @@ public class Astar {
         
         kulunutAika = System.currentTimeMillis() - alkuAika;
         
-        tulokset();
+        //tulokset();
+    }
+    
+    /**
+     * Lisää annetun Solmu[][]-taulun kaikki Solmut käsittelemättömien olmujen joukkoon.
+     */
+    public void lisaaSolmut(Solmu[][] kartta) {
+        for(int i = 0; i < kartta.length; i++) {
+            for(int j = 0; j < kartta[0].length; j++) {
+                kasittelematta.lisaa(kartta[i][j]);
+            }
+        }
     }
     
     /**
