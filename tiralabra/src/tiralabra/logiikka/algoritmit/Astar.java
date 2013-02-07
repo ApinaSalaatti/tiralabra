@@ -135,11 +135,7 @@ public class Astar {
         if(v.alkuun > u.alkuun + v.hinta()) {
             v.alkuun = u.alkuun + v.hinta();
             polku[v.indeksi()] = u;
-        }
-        
-        // kikkailua. Poistamalla solmun ja lisäämällä uudestaan keko pysyy varmasti järjestyksessä
-        if(solmut.poista(v)) {
-            solmut.lisaa(v);
+            solmut.jarjestaYlos(v);
         }
         
     }

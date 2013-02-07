@@ -65,37 +65,27 @@ public class Dijkstra {
         long alkuAika = System.currentTimeMillis();
         
         ISS(kartta, alku);
+        lisaaSolmut(kartta);
+      
+        while(!kasittelematta.tyhja()) {
+            Solmu s = kasittelematta.poll();
+            loysaaKaikki(kartta, s);
+        }
         
+        kulunutAika = System.currentTimeMillis() - alkuAika;
+
+        //tulokset();
+    }
+    
+    /**
+     * Lisää annetun Solmu[][]-taulun kaikki Solmut käsittelemättömien olmujen joukkoon.
+     */
+    public void lisaaSolmut(Solmu[][] kartta) {
         for(int i = 0; i < kartta.length; i++) {
             for(int j = 0; j < kartta[0].length; j++) {
                 kasittelematta.lisaa(kartta[i][j]);
             }
         }
-      
-        System.out.println("Etäisyys maaliin: " + kartta[maali.y()][maali.x()].alkuun);
-        while(!kasittelematta.tyhja()) {
-            Solmu s = kasittelematta.poll();
-            
-            loysaaKaikki(kartta, s);
-            //System.out.println("Poistettiin solmu " + s + ", koko nyt: " + kasittelematta.koko());
-        }
-        
-        kulunutAika = System.currentTimeMillis() - alkuAika;
-        
-        System.out.println();
-        System.out.println();
-        
-        System.out.println("DATAAAAA");
-        for(int i = 0; i < kartta.length; i++) {
-            for(int j = 0; j < kartta[0].length; j++) {
-                System.out.println("Solmusta " + kartta[i][j] + " alkuun: " + kartta[i][j].alkuun);
-            }
-        }
-        System.out.println("DATAAAAA");
-        
-        System.out.println();
-        System.out.println();
-        //tulokset();
     }
     
     /**
@@ -105,7 +95,7 @@ public class Dijkstra {
     private void ISS(Solmu[][] kartta, Solmu alku) {
         for(int y = 0; y < kartta.length; y++) {
             for(int x = 0; x < kartta[0].length; x++) {
-                kartta[y][x].alkuun = Integer.MAX_VALUE - 100000; // ei MAX_VALUE, koska tällöin siihen plussaaminen heittäisi sen negatiiviseksi
+                kartta[y][x].alkuun = Integer.MAX_VALUE - 1000000; // ei MAX_VALUE, koska tällöin siihen plussaaminen heittäisi sen negatiiviseksi
                 polku[kartta[y][x].indeksi()] = null;
             }
         }
@@ -144,26 +134,10 @@ public class Dijkstra {
      * @param v Solmu jota löysätään
      */
     private void loysaa(Minimikeko<Solmu> solmut, Solmu u, Solmu v) {
-        if(v.toString().equals("(68, 25)") || v.toString().equals("(69, 24)")) {
-            System.out.println("Löysätään maalin naapuria! Etäisyys solmuun " + u + ": " + u.alkuun);
-        }
-        if(v.toString().equals("(69, 25)")) {
-            System.out.println("Löysätään maalia! Etäisyys solmuun " + u + ": " + u.alkuun);
-        }
         if(v.alkuun > u.alkuun + v.hinta()) {
-            if(v.toString().equals("(69, 25)"))
-                System.out.println("Solmuun " + v + " saavutaan solmun " + u + " kautta.");
             v.alkuun = u.alkuun + v.hinta();
             polku[v.indeksi()] = u;
-        }
-        
-        if(v.toString().equals("(0, 1)") || v.toString().equals("(1, 0)")) {
-            System.out.println("Löysättiin alun naapuria! Etäisyys alkuun: " + v.alkuun);
-        }
-        
-        // kikkailua, näin keko pysyy varmasti järjestyksessä.
-        if(solmut.poista(v)) {
-            solmut.lisaa(v);
+            solmut.jarjestaYlos(v);
         }
     }
     

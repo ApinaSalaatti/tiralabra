@@ -43,6 +43,7 @@ public class MinimikekoTest {
         keko.lisaa(4);
         
         assertTrue(keko.poll() == 1);
+        assertTrue(keko.poll() == 4);
     }
     
     @Test
@@ -54,5 +55,27 @@ public class MinimikekoTest {
         keko.lisaa(4);
         
         assertTrue(keko.koko() == 5);
+    }
+    
+    @Test
+    public void poistaminenPienentaaKokoa() {
+        keko.lisaa(5);
+        keko.lisaa(8);
+        keko.lisaa(6);
+        keko.poll();
+        
+        assertTrue(keko.koko() == 2);
+    }
+    
+    @Test
+    public void tyhjentaminen() {
+        keko.lisaa(5);
+        keko.lisaa(8);
+        keko.lisaa(6);
+        keko.poll();
+        keko.poll();
+        keko.poll();
+        
+        assertTrue(keko.tyhja());
     }
 }

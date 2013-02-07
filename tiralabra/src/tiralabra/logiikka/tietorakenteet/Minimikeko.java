@@ -51,20 +51,40 @@ public class Minimikeko<K extends Comparable> {
      * @return keon pienin alkio
      */
     public K poll( ) {
-        if(tyhja()) {
-            throw new RuntimeException("Keko on tyhjä!");
-        }
- 
-        K min = keko[0].data();
-        keko[0] = keko[koko - 1];
-        
-        koko--;
-        
         if(koko > 0) {
-            jarjestaAlas(0);
+            K min = keko[0].data();
+            keko[0] = keko[koko - 1];
+
+            koko--;
+
+            if(koko > 0) {
+                jarjestaAlas(0);
+            }
+            
+            return min;
+        }
+        return null;
+    }
+    
+    /**
+     * Varmistaa että kekoehto on voimassa annetun datan sisältävästä indeksistä ylöspäin. Mikäli kyseistä dataa ei ole kekoon talletettu, ei tehdä mitään.
+     * 
+     * @param k data jonka indeksistä keko järjestetään
+     */
+    public void jarjestaYlos(K k) {
+        Kekosolmu<K> s = null;
+        int i = 0;
+        while(i < koko) {
+            if(keko[i].data().equals(k)) {
+                s = keko[i];
+                break;
+            }
+            i++;
         }
         
-        return min;
+        if(s != null) {
+            jarjestaYlos(i);
+        }
     }
     
     /**

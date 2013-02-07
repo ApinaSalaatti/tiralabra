@@ -48,4 +48,13 @@ public class LinkitettyListaTest {
         
         assertTrue(testilista.koko() == 3);
     }
+    
+    @Test
+    public void poistaminen() {
+        testilista.lisaa("Jee");
+        testilista.lisaa("JOO");
+        
+        assertTrue(testilista.poista("Jee"));
+        assertFalse(testilista.poista("Jee"));
+    }
 }
