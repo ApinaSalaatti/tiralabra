@@ -172,7 +172,7 @@ public class Astar {
      */
     public int itseisarvo(int arvo) {
         if(arvo >= 0) {
-            return 0;
+            return arvo;
         }
         
         return -arvo;
