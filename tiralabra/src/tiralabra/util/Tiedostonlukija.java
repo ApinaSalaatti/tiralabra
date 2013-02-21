@@ -18,7 +18,7 @@ public class Tiedostonlukija {
      * @param nimi luettavan tiedoston nimi
      * @return char[][]-taulukko johon tiedosto luettiin
      */
-   public static char[][] tiedostoTauluun(String nimi) {
+   public static char[][] tiedostoTauluun(String nimi) throws Exception {
        Scanner s = tiedostoLukijaan(nimi);
         
        LinkitettyLista<String> rivit = new LinkitettyLista<String>();
@@ -36,17 +36,11 @@ public class Tiedostonlukija {
      * 
      * @return Scanner-olio johon tiedosto luettu
      */
-    private static Scanner tiedostoLukijaan(String nimi) {
-        try {
-            File tiedosto = new File(nimi);
+    private static Scanner tiedostoLukijaan(String nimi) throws Exception {
+        File tiedosto = new File(nimi);
             
-            return new Scanner(tiedosto);
-            
-        } catch(Exception e) {
-            System.out.println("Tiedoston avaaminen epäonnistui!");
-            
-            return null;
-        }
+        return new Scanner(tiedosto);
+        
     }
     
     /**

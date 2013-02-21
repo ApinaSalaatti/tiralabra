@@ -13,31 +13,14 @@ import tiralabra.logiikka.Kartta;
  * 
  * @author merioksa
  */
-public class Dijkstra {
+public class Dijkstra extends Algoritmi {
     /**
      * Vielä läpi käymättömät solmut minimikeossa.
      */
     private Minimikeko<Solmu> kasittelematta;
-    /**
-     * Viimeisimpään suoritukseen kulunut aika.
-     */
-    private long kulunutAika;
-    /**
-     * Edellisessä ajossa käytetty aloitussolmu (tulosten tulostamista varten)
-     */
-    private Solmu aloitusSolmu;
-    /**
-     * Edellisessä ajossa käytetty maalisolmu (tulosten tulostamista varten)
-     */
-    private Solmu maaliSolmu;
-    /**
-     * Taulukko, jonka kussakin indeksissä on talletettuna se Solmu josta kyseisen indeksin omaavaan Solmuun on saavuttu.
-     */
-    private Solmu[] polku;
     
     public Dijkstra() {
         kasittelematta = new Minimikeko<Solmu>();
-        polku = null;
     }
     
     /**
@@ -49,14 +32,10 @@ public class Dijkstra {
         return polku;
     }
     
-    /**
-     * Suorittaa algoritmin annetulla kartalla, lähtien annetusta lähtösolmusta.
-     * 
-     * @param kartta kartta jolla reittia etsitään
-     * @param alku solmu josta algoritmi lähtee reittiä etsimään
-     * @param maali tavoitteena oleva solmu
-     */
+    @Override
     public void aja(Solmu[][] kartta, Solmu alku, Solmu maali) {
+        this.kartta = kartta;
+        
         aloitusSolmu = alku;
         maaliSolmu = maali;
         
@@ -141,27 +120,9 @@ public class Dijkstra {
         }
     }
     
-    /**
-     * Tulostaa viimeisimmän ajon tulokset.
-     */
+    @Override
     public void tulokset() {
         System.out.println("DIJKSTRA");
-        System.out.println("Aikaa kului: " + kulunutAika + "ms");
-        
-        tulostaReitti();
-    }
-    
-    /**
-     * Tulostetaan reitti jonka algoritmi löysi aloitussolmusta maalisolmuun.
-     */
-    public void tulostaReitti() {
-        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
-        Solmu nyt = polku[maaliSolmu.indeksi()];
-        
-        System.out.println(maaliSolmu);
-        while(nyt != null) {
-            System.out.println(nyt);
-            nyt = polku[nyt.indeksi()];
-        }
+        super.tulokset();
     }
 }

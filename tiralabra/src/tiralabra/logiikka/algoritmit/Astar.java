@@ -8,31 +8,14 @@ import tiralabra.logiikka.tietorakenteet.*;
  * 
  * @author merioksa
  */
-public class Astar {
+public class Astar extends Algoritmi {
     /**
      * Vielä läpi käymättömät solmut minimikeossa.
      */
     private Minimikeko<Solmu> kasittelematta;
-    /**
-     * Viimeisimpään suoritukseen kulunut aika.
-     */
-    private long kulunutAika;
-    /**
-     * Edellisessä ajossa käytetty aloitussolmu (tulosten tulostamista varten)
-     */
-    private Solmu aloitusSolmu;
-    /**
-     * Edellisessä ajossa käytetty maalisolmu (tulosten tulostamista varten)
-     */
-    private Solmu maaliSolmu;
-    /**
-     * Taulukko, jonka kussakin indeksissä on talletettuna se Solmu josta kyseisen indeksin omaavaan Solmuun on saavuttu.
-     */
-    private Solmu[] polku;
     
     public Astar() {
         kasittelematta = new Minimikeko<Solmu>();
-        polku = null;
     }
     
     /**
@@ -44,25 +27,22 @@ public class Astar {
         return polku;
     }
     
-    /**
-     * Suorittaa algoritmin annetulla kartalla, lähtien annetusta lähtösolmusta.
-     * 
-     * @param kartta kartta jolla reittia etsitään
-     * @param alku solmu josta algoritmi lähtee reittiä etsimään
-     * @param maali tavoitteena oleva solmu
-     */
+    @Override
     public void aja(Solmu[][] kartta, Solmu alku, Solmu maali) {
+        this.kartta = kartta;
+                
         aloitusSolmu = alku;
         maaliSolmu = maali;
         
         polku = new Solmu[kartta.length * kartta[0].length];
         
         long alkuAika = System.currentTimeMillis();
+        
         ISS(kartta, alku, maali);
         lisaaSolmut(kartta);
         
         Solmu s = kasittelematta.poll();
-        while(s != maali) {
+        while(!kasittelematta.tyhja()) {
             loysaaKaikki(kartta, s);
             
             s = kasittelematta.poll();
@@ -141,30 +121,6 @@ public class Astar {
     }
     
     /**
-     * Tulostaa viimeisimmän ajon tulokset.
-     */
-    public void tulokset() {
-        System.out.println("A*");
-        System.out.println("Aikaa kului: " + kulunutAika + "ms");
-        
-        tulostaReitti();
-    }
-    
-    /**
-     * Tulostetaan reitti jonka algoritmi löysi aloitussolmusta maalisolmuun.
-     */
-    public void tulostaReitti() {
-        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
-        Solmu nyt = polku[maaliSolmu.indeksi()];
-        
-        System.out.println(maaliSolmu);
-        while(nyt != null) {
-            System.out.println(nyt);
-            nyt = polku[nyt.indeksi()];
-        }
-    }
-    
-    /**
      * Apumetodi joka palauttaa annetun arvon itseisarvon.
      * 
      * @param arvo arvo jonka itseisarvo halutaan
@@ -176,5 +132,11 @@ public class Astar {
         }
         
         return -arvo;
+    }
+    
+    @Override
+    public void tulokset() {
+        System.out.println("A*");
+        super.tulokset();
     }
 }

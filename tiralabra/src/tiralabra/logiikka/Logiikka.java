@@ -99,4 +99,13 @@ public class Logiikka {
             System.out.println("Karttaa ei ole asetettu!");
         }
     }
+    
+    /**
+     * Tulostaa viimeisimpien ajojen tulokset.
+     */
+    public void tulokset() {
+        dijkstra.tulokset();
+        bellmanFord.tulokset();
+        astar.tulokset();
+    }
 }

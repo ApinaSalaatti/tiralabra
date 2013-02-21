@@ -80,8 +80,14 @@ public class AsetaKarttaKomento implements Komento {
     public char[][] tiedostosta() {
         System.out.println("Anna tiedostonimi:");
         String nimi = lukija.nextLine();
-
-        return Tiedostonlukija.tiedostoTauluun(nimi);
+        try {
+            char[][] kartta = Tiedostonlukija.tiedostoTauluun(nimi);
+            return kartta;
+        } catch(Exception e) {
+            System.out.println("Ongelma tiedoston lukemisessa!");
+        }
+        
+        return null;
     }
     
     /**

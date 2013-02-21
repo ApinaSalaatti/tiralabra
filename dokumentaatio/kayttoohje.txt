@@ -1,0 +1,15 @@
+# Miten ohjelma suoritetaan, miten eri toiminnallisuuksia käytetään #
+
+Ohjelman suorittaminen on helppoa! Jar-tiedoston (ks. alla) sisältävässä kansiossa annetaan komentoriviltä komento "java -jar tiralabra.jar" ja ohjelma käynnistyy (tämä tietysti olettaa että java on asennettuna :).
+
+Käynnistyessä ohjelma avautuu päävalikkoon, josta toiminto valitaan antamalla halutun toiminnon numero. Jokainen toiminto antaa käyttäjälle ohjeita, jolloin ohjelman käytön pitäisi olla selkeää.
+
+
+# Minkä muotoisia syötteitä ohjelma hyväksyy #
+
+Ohjelmalle tiedostosta syötetyn kartan tulee sisältää ainoastaan . ja # -merkkejä, eikä rivien välissä saa olla tyhjiä rivejä. Lisäksi jokaisen rivin tulisi olla yhtä pitkä, tosin ensimmäisen rivin jälkeen tulevien liian pitkien rivien ylimääräiset merkit yksinkertaisesti jätetään huomiotta.
+
+
+# Missä kansiossa on jar ja ajamiseen tarvittavat testitiedostot. #
+
+Ohjelman jar-tiedosto löytyy tiralabra/dist/-kansiosta. Kansiosta löytyy myös muutama ohjelman testaamiseen sopiva kartta, joista voi toki myös ottaa mallia omia karttoja luodakseen.

@@ -49,6 +49,14 @@ public class Kartta {
     public Solmu[][] kartta() {
         return kartta;
     }
+    /**
+     * Getteri kartan "kuvalliselle" esitykselle.
+     * 
+     * @return käytössä oleva kartta char[][]-tauluna
+     */
+    public char[][] karttaCh() {
+        return karttaCh;
+    }
     
     /**
      * Metodi jonka avulla voidaan syöttää kartta char-taulukkona. Taulukko muutetaan Solmu-olioita sisältäväksi taulukoksi.

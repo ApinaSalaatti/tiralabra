@@ -6,36 +6,16 @@ package tiralabra.logiikka.algoritmit;
  * 
  * @author merioksa
  */
-public class BellmanFord {
-    /**
-     * Viimeisimpään suoritukseen kulunut aika.
-     */
-    private long kulunutAika;
-    /**
-     * Edellisessä ajossa käytetty aloitussolmu (tulosten tulostamista varten)
-     */
-    private Solmu aloitusSolmu;
-    /**
-     * Edellisessä ajossa käytetty maalisolmu (tulosten tulostamista varten)
-     */
-    private Solmu maaliSolmu;
-    /**
-     * Taulukko, jonka kussakin indeksissä on talletettuna se Solmu josta kyseisen indeksin omaavaan Solmuun on saavuttu.
-     */
-    private Solmu[] polku;
-    
+public class BellmanFord extends Algoritmi {
+ 
     public BellmanFord() {
         
     }
     
-    /**
-     * Suorittaa algoritmin annetulla kartalla, lähtien annetusta lähtösolmusta.
-     * 
-     * @param kartta kartta jolla reittia etsitään
-     * @param alku solmu josta algoritmi lähtee reittiä etsimään
-     * @param maali tavoitteena oleva solmu
-     */
+    @Override
     public void aja(Solmu[][] kartta, Solmu alku, Solmu maali) {
+        this.kartta = kartta;
+                
         aloitusSolmu = alku;
         maaliSolmu = maali;
         
@@ -52,8 +32,6 @@ public class BellmanFord {
         }
         
         kulunutAika = System.currentTimeMillis() - alkuAika;
-        
-        //tulokset();
     }
     
     /**
@@ -111,27 +89,9 @@ public class BellmanFord {
         }
     }
     
-    /**
-     * Tulostaa viimeisimmän ajon tulokset.
-     */
+    @Override
     public void tulokset() {
         System.out.println("BELLMAN-FORD");
-        System.out.println("Aikaa kului: " + kulunutAika + "ms");
-        
-        tulostaReitti();
-    }
-    
-    /**
-     * Tulostetaan reitti jonka algoritmi löysi aloitussolmusta maalisolmuun.
-     */
-    public void tulostaReitti() {
-        System.out.println("Lyhin reitti solmusta " + aloitusSolmu + " solmuun " + maaliSolmu + ":");
-        Solmu nyt = polku[maaliSolmu.indeksi()];
-        
-        System.out.println(maaliSolmu);
-        while(nyt != null) {
-            System.out.println(nyt);
-            nyt = polku[nyt.indeksi()];
-        }
+        super.tulokset();
     }
 }

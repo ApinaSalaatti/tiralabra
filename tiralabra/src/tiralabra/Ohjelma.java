@@ -50,6 +50,7 @@ public class Ohjelma {
         komennot.lisaa(new TulostaKarttaKomento());
         komennot.lisaa(new AjaAlgoritmiKomento());
         komennot.lisaa(new AsetaAlkuJaMaaliKomento());
+        komennot.lisaa(new TuloksetKomento());
     }
     
     /**
